@@ -2,6 +2,7 @@ package Logic;
 
 import Setup.FontBuilder;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -31,7 +32,7 @@ public class GameManager {
         renderer.setProjectionMatrix();
 
         renderer.renderStart();
-        renderer.render(Font, "YOP", 0,0);
+        renderer.render(Font, logic.test(), 0,0);
         renderer.renderEnd();
     }
 

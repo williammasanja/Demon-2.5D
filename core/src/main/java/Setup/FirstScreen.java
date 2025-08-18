@@ -26,7 +26,6 @@ public class FirstScreen implements Screen {
         gameManager.render();
         gameManager.updateLogic();
 
-
     }
 
     @Override
