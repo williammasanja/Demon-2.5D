@@ -2,6 +2,7 @@ package Logic;
 
 import Setup.FontBuilder;
 import Setup.itemBuilder;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -26,6 +27,8 @@ public class L3_Render {
     ArrayList<itemBuilder> itemList;
 
     ShapeRenderer L3; // Hitbox Layer
+
+
 
     public L3_Render(){
         camera = new OrthographicCamera();
@@ -89,6 +92,11 @@ public class L3_Render {
             L3.rect(Hitbox.x, Hitbox.y, Hitbox.width, Hitbox.height);
         }
     }
+    public void render(Rectangle Hitbox, int x, int y){
+        if(Hitbox != null) {
+            L3.rect(x, y, Hitbox.width, Hitbox.height);
+        }
+    }
     public void renderStart() {
         L1.begin();
         L2.begin();
@@ -102,6 +110,8 @@ public class L3_Render {
     }
 
     public void setProjectionMatrix(){
+        camera.position.set(12 * 50, 6 * 50, 0);
+        camera.update();
        L1.setProjectionMatrix(camera.combined);
        L2.setProjectionMatrix(camera.combined);
        L3.setProjectionMatrix(camera.combined);
