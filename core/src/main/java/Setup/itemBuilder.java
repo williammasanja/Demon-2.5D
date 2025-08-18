@@ -13,11 +13,14 @@ public class itemBuilder {
     public int ID;
     public float width;
     public float height;
+    public float degree;
 
     public boolean moveable;
     public boolean showbox;
     public boolean showtexture;
     public boolean boxactive;
+
+
 
     public itemBuilder(String name){
         this(name,(500/2.4f), (700/2.4f));
@@ -35,6 +38,7 @@ public class itemBuilder {
         Hitbox = new Rectangle(x,y, width, height);
         this.width = Hitbox.width;
         this.height = Hitbox.height;
+        degree = 90;
 
         showtexture = true;
         showbox = true;
@@ -52,9 +56,10 @@ public class itemBuilder {
     }
 
 
-    public void updatePosition(float x, float y){
+    public void setPosition(float x, float y){
         Hitbox.setPosition(x, y);
     }
+    public void setRotationPosition(float degree){ this.degree = degree;}
 
     public float getX(){
         return Hitbox.x;
@@ -62,6 +67,20 @@ public class itemBuilder {
 
     public float getY(){
         return Hitbox.y;
+    }
+
+    public float getSin(){return (float) Math.sin(degree);}
+
+    public float getCos(){ return (float) Math.cos(degree);}
+
+    public float getRotation(){ return degree;}
+
+    public void updatePosition(float x, float y){
+        Hitbox.setPosition(Hitbox.x+x, Hitbox.y+y);
+    }
+
+    public void updateRotationPosition(float degree){
+        degree += degree;
     }
 
     public String returnID(){
@@ -93,7 +112,6 @@ public class itemBuilder {
         Hitbox.height = height;
 
     }
-
 
     public boolean Touchingitem(itemBuilder item){
         if(boxactive) {

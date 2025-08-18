@@ -2,6 +2,7 @@ package Logic;
 
 import Setup.FontBuilder;
 import Setup.MapBuilder;
+import Setup.PlayerBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,12 +21,18 @@ public class GameManager {
     public final float CenterX = Gdx.graphics.getWidth()/2f;
     public final float CenterY = Gdx.graphics.getHeight()/2f;
 
+    private PlayerBuilder player;
+
     public GameManager() {
         renderer = new L3_Render();
         logic = new ItemLogic();
 
         Font = new FontBuilder(100);
         map = new MapBuilder();
+
+        player = new PlayerBuilder();
+
+        logic.player = player;
     }
 
     public void updateLogic() {
@@ -45,7 +52,9 @@ public class GameManager {
                 }
             }
        }
+        renderer.renderPlayerShape(player);
         renderer.render(Font, String.valueOf(map.height), CenterX,CenterY);
+
 
 
 

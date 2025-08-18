@@ -1,6 +1,7 @@
 package Logic;
 
 import Setup.FontBuilder;
+import Setup.PlayerBuilder;
 import Setup.itemBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -63,6 +64,12 @@ public class L3_Render {
 
     public void render(FontBuilder font, String text, float x, float y){
         font.bitmap.draw(L1, text, x- font.getWidth(text)/2f, y+font.getHeight(text)/2f);
+    }
+
+    public void renderPlayerShape(PlayerBuilder player){
+
+        L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
+        L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * player.lineradius, player.getCenterY() + player.getSin() * player.lineradius);
     }
 
 
