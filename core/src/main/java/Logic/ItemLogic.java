@@ -24,18 +24,18 @@ public class ItemLogic {
         float dx = 0;
 
         // rotate
-        if(inputKey.pressedA()) player.setRotationPosition(player.getRotation() + rotationspeed);
-        if(inputKey.pressedD()) player.setRotationPosition(player.getRotation() - rotationspeed);
+        if(inputKey.pressedA()) player.setRotationPosition(player.getTotalRotation() + rotationspeed);
+        if(inputKey.pressedD()) player.setRotationPosition(player.getTotalRotation() - rotationspeed);
 
 // move forward/backward
 
         if(inputKey.pressedW()) {
-            dx += Math.cos(player.getRotation()) * speed;
-            dy += Math.sin(player.getRotation()) * speed;
+            dx += Math.cos(player.getTotalRotation()) * speed;
+            dy += Math.sin(player.getTotalRotation()) * speed;
         }
         if(inputKey.pressedS()) {
-            dx -= Math.cos(player.getRotation()) * speed;
-            dy -= Math.sin(player.getRotation()) * speed;
+            dx -= Math.cos(player.getTotalRotation()) * speed;
+            dy -= Math.sin(player.getTotalRotation()) * speed;
         }
 
         player.updatePosition(dx, dy);

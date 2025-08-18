@@ -70,6 +70,7 @@ public class L3_Render {
 
         L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
         L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * player.lineradius, player.getCenterY() + player.getSin() * player.lineradius);
+
     }
 
 

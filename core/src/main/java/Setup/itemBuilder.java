@@ -38,7 +38,7 @@ public class itemBuilder {
         Hitbox = new Rectangle(x,y, width, height);
         this.width = Hitbox.width;
         this.height = Hitbox.height;
-        degree = 90;
+        degree = 0;
 
         showtexture = true;
         showbox = true;
@@ -73,7 +73,12 @@ public class itemBuilder {
 
     public float getCos(){ return (float) Math.cos(degree);}
 
-    public float getRotation(){ return degree;}
+    public float getTotalRotation(){ return degree;}
+    public float getRotationDegrees(){
+        float deg = (float)Math.toDegrees(degree);
+        if(deg < 0) deg += 360;
+        return deg % 360; // ensures 0–360
+    }
 
     public void updatePosition(float x, float y){
         Hitbox.setPosition(Hitbox.x+x, Hitbox.y+y);

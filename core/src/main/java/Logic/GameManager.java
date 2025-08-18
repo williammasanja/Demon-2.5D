@@ -32,6 +32,7 @@ public class GameManager {
 
         player = new PlayerBuilder();
 
+
         logic.player = player;
     }
 
@@ -53,11 +54,7 @@ public class GameManager {
             }
        }
         renderer.renderPlayerShape(player);
-        renderer.render(Font, String.valueOf(map.height), CenterX,CenterY);
-
-
-
-
+        renderer.render(Font, String.valueOf(player.getRotationDegrees()), CenterX,CenterY);
 
         renderer.renderEnd();
     }
