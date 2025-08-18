@@ -37,12 +37,15 @@ public class GameManager {
         renderer.setProjectionMatrix();
 
         renderer.renderStart();
-        renderer.render(Font, String.valueOf(map.height), CenterX,CenterY);
+
         for(int j = 0; j < map.height; j++) {
             for (int i = 0; i < map.width; i++) {
-               renderer.render(map.box, i * 100, j * 100);
+                if(map.grid[j][i] == 1) {
+                    renderer.render(map.box, i * 100, j * 100);
+                }
             }
        }
+        renderer.render(Font, String.valueOf(map.height), CenterX,CenterY);
 
 
 
