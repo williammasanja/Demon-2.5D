@@ -18,28 +18,27 @@ public class ItemLogic {
 
 
     public void Logic() {
+        float rotationspeed = 0.05f;
         float speed = 5;
         float dy = 0;
         float dx = 0;
-        if(inputKey.pressedW()) dy += 1;
-        if(inputKey.pressedS()) dy -= 1;
-        if(inputKey.pressedA()) dx = 1;
-        if(inputKey.pressedD()) dx = -1;
 
-        float length = (float) Math.sqrt(dx*dx + dy*dy);
-        if(length != 0) {
-            dx = dx / length * speed;
-            dy = dy / length * speed;
+        // rotate
+        if(inputKey.pressedA()) player.setRotationPosition(player.getRotation() + rotationspeed);
+        if(inputKey.pressedD()) player.setRotationPosition(player.getRotation() - rotationspeed);
+
+// move forward/backward
+
+        if(inputKey.pressedW()) {
+            dx += Math.cos(player.getRotation()) * speed;
+            dy += Math.sin(player.getRotation()) * speed;
+        }
+        if(inputKey.pressedS()) {
+            dx -= Math.cos(player.getRotation()) * speed;
+            dy -= Math.sin(player.getRotation()) * speed;
         }
 
         player.updatePosition(dx, dy);
-
-
-        float rotationSpeed = 0.05f; // radians per frame (adjust)
-        if(dx != 0){
-        player.setRotationPosition((player.getRotation() +  dx * rotationSpeed));
-        }
-
 
     }
 
