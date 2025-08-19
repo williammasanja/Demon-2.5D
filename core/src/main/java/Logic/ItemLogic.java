@@ -1,14 +1,15 @@
 package Logic;
 
+import Setup.MapBuilder;
 import Setup.PlayerBuilder;
 import com.badlogic.gdx.Input;
+
+import java.util.Map;
 
 public class ItemLogic {
     InputKey inputKey;
     public  PlayerBuilder player;
-
-
-
+    public MapBuilder map;
 
 
     public ItemLogic() {
@@ -16,31 +17,52 @@ public class ItemLogic {
     }
 
 
-
     public void Logic() {
-        float rotationspeed = 0.05f;
+        float rotationspeed = 2f;
         float speed = 5;
         float dy = 0;
         float dx = 0;
 
+
         // rotate
-        if(inputKey.pressedA()) player.setRotationPosition(player.getTotalRotation() + rotationspeed);
-        if(inputKey.pressedD()) player.setRotationPosition(player.getTotalRotation() - rotationspeed);
+        if(inputKey.pressedA()) player.setRotationPosition(player.getRotationDegrees() + rotationspeed);
+        if(inputKey.pressedD()) player.setRotationPosition(player.getRotationDegrees() - rotationspeed);
 
 // move forward/backward
 
-        if(inputKey.pressedW()) {
-            dx += Math.cos(player.getTotalRotation()) * speed;
-            dy += Math.sin(player.getTotalRotation()) * speed;
+            if (inputKey.pressedW()) {
+                dx += (float) (Math.cos(player.getRad()) * speed);
+                dy += (float) (Math.sin(player.getRad()) * speed);
+            }
+            if (inputKey.pressedS()) {
+                dx -= (float) (Math.cos(player.getRad()) * speed);
+                dy -= (float) (Math.sin(player.getRad()) * speed);
+            }
+
+
+        if(inputKey.pressed(Input.Keys.SPACE)){
+            player.setRotationPosition(90);
         }
-        if(inputKey.pressedS()) {
-            dx -= Math.cos(player.getTotalRotation()) * speed;
-            dy -= Math.sin(player.getTotalRotation()) * speed;
-        }
+        float oldX = player.getX();
+        float oldY = player.getY();
 
         player.updatePosition(dx, dy);
 
+
+        player.touching = false;
+        for(int j = 0; j < map.height; j++) {
+            for (int i = 0; i < map.width; i++) {
+                if(player.TouchingBox(map.getMapHitbox(i, j))){
+                    player.touching = true;
+                }
+            }
+        }
+
+        if (player.touching) {
+            player.setPosition(oldX, oldY);
+        }
     }
+
 
     public String test(){
         if(inputKey.pressedW()){

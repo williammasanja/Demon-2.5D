@@ -6,20 +6,27 @@ public class PlayerBuilder extends  itemBuilder{
     public float hitboxradius;
     public float lineradius;
 
-    float FOV;
-    int NumofRays;
-    float DeltaAngle;
+    public float FOV;
+    public float HALFFOV;
+    public float DeltaAngle;
+    public float HalfRays;
+    public int NumofRays;
+
+    public int Depth;
+
 
 
     public PlayerBuilder(){
-        super("Player", 50, 50, 0,0);
+        super("Player", 50, 50, 150,150);
+
         hitboxradius = 25;
-        lineradius = 100;
+        lineradius = 600;
         FOV = (float) (Math.PI/3f);
-        NumofRays = Gdx.graphics.getWidth()/2;
+        HALFFOV = FOV/2f; //radians
+        NumofRays = 100;
+        HalfRays = NumofRays/2f;
         DeltaAngle = FOV/NumofRays;
-
-
+        Depth = 20;
     }
 
     public float getCenterX(){

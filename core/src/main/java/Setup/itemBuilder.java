@@ -19,6 +19,7 @@ public class itemBuilder {
     public boolean showbox;
     public boolean showtexture;
     public boolean boxactive;
+    public boolean touching = false;
 
 
 
@@ -44,6 +45,7 @@ public class itemBuilder {
         showbox = true;
         moveable = true;
         boxactive = true;
+        touching = false;
     }
 
     public itemBuilder(itemBuilder original) {
@@ -59,7 +61,7 @@ public class itemBuilder {
     public void setPosition(float x, float y){
         Hitbox.setPosition(x, y);
     }
-    public void setRotationPosition(float degree){ this.degree = degree;}
+    public void setRotationPosition(float degree){   this.degree = (float) Math.toRadians(degree);}
 
     public float getX(){
         return Hitbox.x;
@@ -73,7 +75,7 @@ public class itemBuilder {
 
     public float getCos(){ return (float) Math.cos(degree);}
 
-    public float getTotalRotation(){ return degree;}
+    public float getRad(){ return degree;}
     public float getRotationDegrees(){
         float deg = (float)Math.toDegrees(degree);
         if(deg < 0) deg += 360;
@@ -121,6 +123,16 @@ public class itemBuilder {
     public boolean Touchingitem(itemBuilder item){
         if(boxactive) {
             if (Hitbox.overlaps(item.Hitbox)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean TouchingBox(Rectangle Box){
+        if(boxactive) {
+            if (Hitbox.overlaps(Box)) {
+                touching = true;
                 return true;
             }
         }

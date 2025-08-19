@@ -34,6 +34,7 @@ public class GameManager {
 
 
         logic.player = player;
+        logic.map = map;
     }
 
     public void updateLogic() {
@@ -49,13 +50,17 @@ public class GameManager {
         for(int j = 0; j < map.height; j++) {
             for (int i = 0; i < map.width; i++) {
                 if(map.grid[j][i] == 1) {
-                    renderer.render(map.box, i * 100, j * 100);
+                    map.box.x = i*100;
+                    map.box.y = (map.height - 1 - j) * 100;
+                    renderer.render(map.box, (int) map.box.x, (int) map.box.y);
                 }
             }
        }
+        renderer.render(Font, String.valueOf(player.touching), CenterX, CenterY);
         renderer.renderPlayerShape(player);
-        renderer.render(Font, String.valueOf(player.getRotationDegrees()), CenterX,CenterY);
+        //renderer.render(Font, String.valueOf((int) player.getRotationDegrees()), CenterX,CenterY);
 
+        renderer.render(player.Hitbox);
         renderer.renderEnd();
     }
 

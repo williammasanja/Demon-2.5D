@@ -69,8 +69,17 @@ public class L3_Render {
     public void renderPlayerShape(PlayerBuilder player){
 
         L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
-        L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * player.lineradius, player.getCenterY() + player.getSin() * player.lineradius);
+        //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * player.lineradius, player.getCenterY() + player.getSin() * player.lineradius);
 
+        float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
+
+
+        for(int range = 0; range < player.NumofRays; range++){
+            float sin_a = (float) Math.sin(ray_angle);
+            float cos_a = (float) Math.cos(ray_angle);
+            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + cos_a * player.lineradius, player.getCenterY() + sin_a * player.lineradius);
+            ray_angle += player.DeltaAngle;
+        }
     }
 
 
