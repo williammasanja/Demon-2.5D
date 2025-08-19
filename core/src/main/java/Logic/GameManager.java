@@ -35,6 +35,8 @@ public class GameManager {
 
         logic.player = player;
         logic.map = map;
+
+        renderer.map = map;
     }
 
     public void updateLogic() {

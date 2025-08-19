@@ -9,6 +9,7 @@ public class MapBuilder {
 
     public int width;
     public int height;
+    public final int unit = 100;
 
     public Rectangle box;
 
@@ -41,6 +42,27 @@ public class MapBuilder {
     public Rectangle getMapHitbox(int x, int y){
         Vector2 coords = getMapCoords(x, y);
         return new Rectangle(coords.x, coords.y, 100, 100);
+    }
+
+    /*public boolean Wallhit(int x, int y){
+        int newx = x/unit;
+        int newy = y/unit;
+
+        if(grid[height-1-newy][newx] == 1){
+            return true;
+        }
+        return false;
+    }*/
+
+    public boolean Wallhit(int x, int y) {
+        int newx = x / unit;
+        int newy = y / unit;
+
+        // check bounds
+        if (newx < 0 || newx >= width || newy < 0 || newy >= height) return false;
+
+        // access the grid safely
+        return grid[height - 1 - newy][newx] == 1;
     }
 
 

@@ -1,6 +1,7 @@
 package Logic;
 
 import Setup.FontBuilder;
+import Setup.MapBuilder;
 import Setup.PlayerBuilder;
 import Setup.itemBuilder;
 import com.badlogic.gdx.Gdx;
@@ -28,8 +29,7 @@ public class L3_Render {
     ArrayList<itemBuilder> itemList;
 
     ShapeRenderer L3; // Hitbox Layer
-
-
+    MapBuilder map;
 
     public L3_Render(){
         camera = new OrthographicCamera();
@@ -73,11 +73,69 @@ public class L3_Render {
 
         float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
 
-
+        float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort;
         for(int range = 0; range < player.NumofRays; range++){
             float sin_a = (float) Math.sin(ray_angle);
             float cos_a = (float) Math.cos(ray_angle);
-            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + cos_a * player.lineradius, player.getCenterY() + sin_a * player.lineradius);
+
+            //Horizontal
+            if(sin_a > 0){
+               yhor =(float) (Math.ceil(player.getY()/100) * 100);
+               dy = 100;
+            }
+            else{
+                yhor = (float) (Math.floor(player.getY()/100) * 100);
+                dy = -100;
+            }
+            depthhort  = (yhor- player.getY())/sin_a;
+            xhor = Math.round((player.getX() + depthhort * cos_a) / map.unit) * map.unit;
+            deltadepth = dy/sin_a;
+            dx = deltadepth * cos_a;
+
+            for(int i = 0; i < player.Depth; i++){
+                int tilex = (int) xhor;
+                int tiley = (int) yhor;
+                if(map.Wallhit(tilex, tiley)){
+                    break;
+                }
+                xhor += dx;
+                yhor += dy;
+                depthhort += deltadepth;
+            }
+
+            //Vertical
+            if(cos_a > 0){
+                xvert = (float) (Math.ceil(player.getX()/100) * 100);
+                dx = 100;
+
+
+            }
+            else{
+                xvert = (float) (Math.floor(player.getX()/100) * 100);
+                dx = -100;
+            }
+
+
+            depthvert = (xvert - player.getX())/cos_a;
+            // Make sure its in the unit
+            yvert = Math.round((player.getY() + depthvert * sin_a) / map.unit) * map.unit;
+            deltadepth = dx/cos_a;
+            dy = deltadepth * sin_a;
+
+            for(int i = 0; i < player.Depth; i++){
+                int tilex = (int) xvert;
+                int tiley = (int) yvert;
+                if(map.Wallhit(tilex, tiley)){
+                    break;
+                }
+                xvert += dx;
+                yvert += dy;
+                depthvert += deltadepth;
+            }
+
+            float depth = Math.min(depthvert, depthhort);
+
+            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + cos_a * depth, player.getCenterY() + sin_a * depth);
             ray_angle += player.DeltaAngle;
         }
     }

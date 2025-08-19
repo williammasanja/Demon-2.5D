@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 
 public class PlayerBuilder extends  itemBuilder{
     public float hitboxradius;
-    public float lineradius;
 
     public float FOV;
     public float HALFFOV;
@@ -20,13 +19,13 @@ public class PlayerBuilder extends  itemBuilder{
         super("Player", 50, 50, 150,150);
 
         hitboxradius = 25;
-        lineradius = 600;
+
         FOV = (float) (Math.PI/3f);
         HALFFOV = FOV/2f; //radians
-        NumofRays = 100;
+        NumofRays = 300;
         HalfRays = NumofRays/2f;
         DeltaAngle = FOV/NumofRays;
-        Depth = 20;
+        Depth = 10; //Boxes to check
     }
 
     public float getCenterX(){
