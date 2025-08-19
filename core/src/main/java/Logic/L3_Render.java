@@ -82,11 +82,11 @@ public class L3_Render {
 
             //Horizontal
             if(sin_a > 0){
-               yhor =(float) (Math.ceil(player.getY()/100) * 100);
+               yhor = (int)(player.getY() / map.unit) * map.unit + map.unit;
                dy = map.unit;
             }
             else{
-                yhor = (float) (Math.floor(player.getY()/100) * 100);
+                yhor = (int)(player.getY() / map.unit) * map.unit - 0.000000001f; // just above current gridline
                 dy = -map.unit;
             }
             depthhort  = (yhor - player.getY())/sin_a;
@@ -107,12 +107,12 @@ public class L3_Render {
 
             //Vertical
             if(cos_a > 0){
-                xvert = (float) (Math.ceil(player.getX()/100) * 100);
+                xvert = (int)(player.getX() / map.unit) * map.unit + map.unit;
                 dx = map.unit;
 
             }
             else{
-                xvert = (float) (Math.floor(player.getX()/100) * 100);
+                xvert = (int)(player.getX() / map.unit) * map.unit - 0.000000001f;
                 dx = -map.unit;
             }
 
