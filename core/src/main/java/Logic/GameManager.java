@@ -52,8 +52,8 @@ public class GameManager {
         for(int j = 0; j < map.height; j++) {
             for (int i = 0; i < map.width; i++) {
                 if(map.grid[j][i] == 1) {
-                    map.box.x = i*100;
-                    map.box.y = (map.height - 1 - j) * 100;
+                    map.box.x = i*map.unit;
+                    map.box.y = (map.height - 1 - j) * map.unit;
                     renderer.render(map.box, (int) map.box.x, (int) map.box.y);
                 }
             }
