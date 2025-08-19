@@ -71,6 +71,10 @@ public class itemBuilder {
         return Hitbox.y;
     }
 
+    public void setX(float x){ Hitbox.x = x;}
+
+    public void setY(float y){ Hitbox.y = y;}
+
     public float getSin(){return (float) Math.sin(degree);}
 
     public float getCos(){ return (float) Math.cos(degree);}

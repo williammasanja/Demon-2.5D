@@ -80,6 +80,12 @@ public class L3_Render {
             float sin_a = (float) Math.sin(ray_angle);
             float cos_a = (float) Math.cos(ray_angle);
 
+            //limiits so angle dosent get closer to 0 thus ray casting errors arrrive
+            if (Math.abs(sin_a) < 1e-30) sin_a = 1e-30f;
+            if (Math.abs(cos_a) < 1e-30) cos_a = 1e-30f;
+
+
+
             //Horizontal
             if(sin_a > 0){
                yhor = (int)(player.getY() / map.unit) * map.unit + map.unit;
