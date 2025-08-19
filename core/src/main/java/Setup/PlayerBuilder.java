@@ -22,7 +22,7 @@ public class PlayerBuilder extends  itemBuilder{
 
         FOV = (float) (Math.PI/3f);
         HALFFOV = FOV/2f; //radians
-        NumofRays = 300;
+        NumofRays = 10;
         HalfRays = NumofRays/2f;
         DeltaAngle = FOV/NumofRays;
         Depth = 10; //Boxes to check

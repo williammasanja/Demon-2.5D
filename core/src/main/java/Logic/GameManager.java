@@ -58,7 +58,7 @@ public class GameManager {
                 }
             }
        }
-        renderer.render(Font, String.valueOf(player.touching), CenterX, CenterY);
+        renderer.render(Font, String.valueOf(renderer.test), CenterX, CenterY);
         renderer.renderPlayerShape(player);
         //renderer.render(Font, String.valueOf((int) player.getRotationDegrees()), CenterX,CenterY);
 

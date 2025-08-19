@@ -15,9 +15,9 @@ public class MapBuilder {
 
     public int[][] grid = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
@@ -44,25 +44,16 @@ public class MapBuilder {
         return new Rectangle(coords.x, coords.y, 100, 100);
     }
 
-    /*public boolean Wallhit(int x, int y){
-        int newx = x/unit;
-        int newy = y/unit;
-
-        if(grid[height-1-newy][newx] == 1){
-            return true;
+    public boolean Wallhit(int x, int y) {
+        for(int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                Rectangle rect = getMapHitbox(i, j);
+                if(rect.contains(x, y)){
+                    return true;
+                }
+            }
         }
         return false;
-    }*/
-
-    public boolean Wallhit(int x, int y) {
-        int newx = x / unit;
-        int newy = y / unit;
-
-        // check bounds
-        if (newx < 0 || newx >= width || newy < 0 || newy >= height) return false;
-
-        // access the grid safely
-        return grid[height - 1 - newy][newx] == 1;
     }
 
 

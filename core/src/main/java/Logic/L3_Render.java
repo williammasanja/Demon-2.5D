@@ -31,6 +31,8 @@ public class L3_Render {
     ShapeRenderer L3; // Hitbox Layer
     MapBuilder map;
 
+    public String test = "YOP";
+
     public L3_Render(){
         camera = new OrthographicCamera();
         viewport = new FitViewport(1200, 600, camera); // virtual world size
@@ -69,7 +71,7 @@ public class L3_Render {
     public void renderPlayerShape(PlayerBuilder player){
 
         L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
-        //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * player.lineradius, player.getCenterY() + player.getSin() * player.lineradius);
+        //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit  , player.getCenterY() + player.getSin() * map.unit);
 
         float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
 
@@ -87,8 +89,8 @@ public class L3_Render {
                 yhor = (float) (Math.floor(player.getY()/100) * 100);
                 dy = -100;
             }
-            depthhort  = (yhor- player.getY())/sin_a;
-            xhor = Math.round((player.getX() + depthhort * cos_a) / map.unit) * map.unit;
+            depthhort  = (yhor - player.getY())/sin_a;
+            xhor = player.getX() + depthhort * cos_a;
             deltadepth = dy/sin_a;
             dx = deltadepth * cos_a;
 
@@ -108,7 +110,6 @@ public class L3_Render {
                 xvert = (float) (Math.ceil(player.getX()/100) * 100);
                 dx = 100;
 
-
             }
             else{
                 xvert = (float) (Math.floor(player.getX()/100) * 100);
@@ -118,7 +119,9 @@ public class L3_Render {
 
             depthvert = (xvert - player.getX())/cos_a;
             // Make sure its in the unit
-            yvert = Math.round((player.getY() + depthvert * sin_a) / map.unit) * map.unit;
+
+            yvert = player.getY() + depthvert * sin_a;
+            test = String.valueOf(yvert);
             deltadepth = dx/cos_a;
             dy = deltadepth * sin_a;
 
@@ -135,11 +138,10 @@ public class L3_Render {
 
             float depth = Math.min(depthvert, depthhort);
 
-            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + cos_a * depth, player.getCenterY() + sin_a * depth);
+            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX()-(player.width/2f) + cos_a * depth, player.getCenterY()-(player.height/2f) + sin_a * depth);
             ray_angle += player.DeltaAngle;
         }
     }
-
 
     public void render(int layer , Texture texture, float x, float y, float width, float height, Rectangle Hitbox, boolean drawbox){
         switch (layer){
