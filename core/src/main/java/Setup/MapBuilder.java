@@ -7,9 +7,11 @@ public class MapBuilder {
     public int initalx;
     public int initaly;
 
-    public int width;
-    public int height;
-    public final int unit = 50;
+    public static int width;
+    public static int height;
+    public static float half_height;
+    public static float half_width;
+    public static final int unit = 50;
 
     public Rectangle box;
 
@@ -35,7 +37,8 @@ public class MapBuilder {
         initaly = 0;
         width = grid[0].length;   // number of columns
         height = grid.length;     // number of rows
-
+        half_width = width /2f;
+        half_height /= height /2f;
         box = new Rectangle(0,0,unit, unit);
     }
 

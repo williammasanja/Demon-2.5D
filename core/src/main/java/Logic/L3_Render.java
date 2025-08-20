@@ -5,6 +5,7 @@ import Setup.MapBuilder;
 import Setup.PlayerBuilder;
 import Setup.itemBuilder;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -48,6 +49,7 @@ public class L3_Render {
 
         //Layer 3
         L3 = new ShapeRenderer();
+        L3.setAutoShapeType(true);
     }
 
     public void add(itemBuilder item, int Layer){
@@ -70,7 +72,7 @@ public class L3_Render {
 
     public void renderPlayerShape(PlayerBuilder player){
 
-        L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
+        //L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
         //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit  , player.getCenterY() + player.getSin() * map.unit);
 
         float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
@@ -83,8 +85,6 @@ public class L3_Render {
             //limiits so angle dosent get closer to 0 thus ray casting errors arrrive
             if (Math.abs(sin_a) < 1e-30) sin_a = 1e-30f;
             if (Math.abs(cos_a) < 1e-30) cos_a = 1e-30f;
-
-
 
             //Horizontal
             if(sin_a > 0){
@@ -143,9 +143,22 @@ public class L3_Render {
             }
 
             float depth = Math.min(depthvert, depthhort);
+            //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX()-(player.width/2f) + cos_a * depth, player.getCenterY()-(player.height/2f) + sin_a * depth);
 
-            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX()-(player.width/2f) + cos_a * depth, player.getCenterY()-(player.height/2f) + sin_a * depth);
+            //projection
+
+           float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
+            L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
+            L3.set(ShapeRenderer.ShapeType.Filled);
+            float proj_height = MapBuilder.unit * player.screen_distance / (depth + 0.0001f);
+            test = String.valueOf(player.screen_distance);
+            float x = (MapBuilder.width * MapBuilder.unit) - (range * player.Scale);
+
+            float y = (MapBuilder.half_height * MapBuilder.unit) - proj_height / 2f;
+            L3.rect(x, y + 250, player.Scale, proj_height+ 50);
+
             ray_angle += player.DeltaAngle;
+
         }
     }
 

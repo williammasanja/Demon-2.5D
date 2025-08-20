@@ -5,6 +5,7 @@ import Setup.MapBuilder;
 import Setup.PlayerBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -49,7 +50,7 @@ public class GameManager {
 
         renderer.renderStart();
 
-        for(int j = 0; j < map.height; j++) {
+        /*for(int j = 0; j < map.height; j++) {
             for (int i = 0; i < map.width; i++) {
                 if(map.grid[j][i] == 1) {
                     map.box.x = i*map.unit;
@@ -58,11 +59,14 @@ public class GameManager {
                 }
             }
        }
-        renderer.render(Font, String.valueOf(renderer.test), CenterX, CenterY);
+         */
+
+
         renderer.renderPlayerShape(player);
+        //renderer.render(Font, String.valueOf(renderer.test), CenterX, CenterY);
         //renderer.render(Font, String.valueOf((int) player.getRotationDegrees()), CenterX,CenterY);
 
-        renderer.render(player.Hitbox);
+        //renderer.render(player.Hitbox);
         renderer.renderEnd();
     }
 

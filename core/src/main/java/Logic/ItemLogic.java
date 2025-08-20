@@ -43,25 +43,6 @@ public class ItemLogic {
         if(inputKey.pressed(Input.Keys.SPACE)){
             player.setRotationPosition(90);
         }
-        /*float oldX = player.getX();
-        float oldY = player.getY();
-
-        player.updatePosition(dx, dy);
-
-
-        player.touching = false;
-        for(int j = 0; j < map.height; j++) {
-            for (int i = 0; i < map.width; i++) {
-                if(player.TouchingBox(map.getMapHitbox(i, j))){
-                    player.touching = true;
-                }
-            }
-        }
-
-        if (player.touching) {
-            player.setPosition(oldX, oldY);
-        }
-         */
 
         //slides on walls
         float oldX = player.getX();
