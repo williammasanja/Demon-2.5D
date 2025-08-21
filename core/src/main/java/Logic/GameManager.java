@@ -3,6 +3,7 @@ package Logic;
 import Setup.FontBuilder;
 import Setup.MapBuilder;
 import Setup.PlayerBuilder;
+import Setup.TextureMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -15,6 +16,8 @@ public class GameManager {
     private FontBuilder Font;
 
     private MapBuilder map;
+
+    private TextureMap textureMap;
 
 
     public final float CenterX = Gdx.graphics.getWidth()/2f;
@@ -30,12 +33,14 @@ public class GameManager {
         map = new MapBuilder();
 
         player = new PlayerBuilder();
+        textureMap = new TextureMap();
 
         logic.player = player;
         logic.map = map;
 
 
         renderer.map = map;
+        renderer.textureMap = textureMap;
 
         Pixmap pm = new Pixmap(4, 4, Pixmap.Format.RGBA8888);
         pm.setColor(0, 0, 0, 0);   // RGBA (fully transparent)
@@ -60,7 +65,7 @@ public class GameManager {
         //renderer.rendermap();
         //renderer.render2dplayer(player);
         //renderer.renderraycast(player);
-        //renderer.render(Font, String.valueOf(renderer.test), CenterX, CenterY);
+        //renderer.render(Font, String.valueOf(player.Scale), CenterX, CenterY);
         //renderer.render(Font, String.valueOf((int) player.getRotationDegrees()), CenterX,CenterY);
 
         //renderer.render(player.Hitbox);

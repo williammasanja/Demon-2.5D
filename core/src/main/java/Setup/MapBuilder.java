@@ -66,5 +66,17 @@ public class MapBuilder {
         return false;
     }
 
+    public Rectangle WallHitRect(int x, int y){
+        for(int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                Rectangle rect = getMapHitbox(i, j);
+                if(rect.contains(x, y)){
+                    return rect;
+                }
+            }
+        }
+        return new Rectangle(-1, -1, 0,0);
+    }
+
 
 }

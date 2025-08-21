@@ -1,15 +1,13 @@
 package Logic;
 
-import Setup.FontBuilder;
-import Setup.MapBuilder;
-import Setup.PlayerBuilder;
-import Setup.itemBuilder;
+import Setup.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
@@ -31,6 +29,7 @@ public class L3_Render {
 
     ShapeRenderer L3; // Hitbox Layer
     MapBuilder map;
+    TextureMap textureMap;
 
     public String test = "YOP";
 
@@ -71,9 +70,14 @@ public class L3_Render {
     }
 
     public void rendermapprojection(PlayerBuilder player){
+
         float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
 
-        float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort;
+        float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort, offset;
+        Rectangle texturehor = new Rectangle();
+        Rectangle texturevert = new Rectangle();
+        Rectangle texturetile;
+
         for(int range = 0; range < player.NumofRays; range++){
             float sin_a = (float) Math.sin(ray_angle);
             float cos_a = (float) Math.cos(ray_angle);
@@ -100,6 +104,7 @@ public class L3_Render {
                 int tilex = (int) xhor;
                 int tiley = (int) yhor;
                 if(map.Wallhit(tilex, tiley)){
+                    texturehor = map.WallHitRect(tilex, tiley);
                     break;
                 }
                 xhor += dx;
@@ -131,32 +136,54 @@ public class L3_Render {
                 int tilex = (int) xvert;
                 int tiley = (int) yvert;
                 if(map.Wallhit(tilex, tiley)){
+                    texturevert = map.WallHitRect(tilex, tiley);
                     break;
                 }
                 xvert += dx;
                 yvert += dy;
                 depthvert += deltadepth;
             }
+            float depth = 0;
+            if(depthvert < depthhort){
+                depth = depthvert;
+                texturetile = texturevert;
+                yvert %= 1;
+                offset = (cos_a > 0) ? yvert : (1 - yvert);
+            }
+            else{
+                depth = depthhort;
+                texturetile = texturehor;
+                xhor %= 1;
+                offset = (sin_a > 0) ? xhor: (1-xhor);
+            }
 
-            float depth = Math.min(depthvert, depthhort);
 
-            //---projection-----------
-
-            //depth by brightness
-            float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
-            L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
-
-            L3.set(ShapeRenderer.ShapeType.Filled);
             float proj_height = MapBuilder.unit * player.screen_distance / (depth + 0.0001f);
             test = String.valueOf(player.screen_distance);
             float x = (MapBuilder.width * MapBuilder.unit) - (range * player.Scale);
-
             float y = (MapBuilder.half_height * MapBuilder.unit) - proj_height / 2f;
-            L3.rect(x, y + 250, player.Scale, proj_height+ 50);
+            //---projection-----------
 
+            // By Rectangles
+            //depth by brightness (not used for textiles so this is canceled out for now)
+            //float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
+            //L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
+            //L3.rect(x, y + 250, player.Scale, proj_height+ 50);
+
+            // By Texture
+            renderTextureWall(player, proj_height, offset, x, y);
             ray_angle += player.DeltaAngle;
 
         }
+    }
+
+
+
+    public void renderTextureWall(PlayerBuilder player, float projheight, float offset, float x, float y){
+        Texture texture = textureMap.returnTexture(1);
+
+        TextureRegion wallcolumn = new TextureRegion(texture, (int)(offset * texture.getWidth() - player.Scale), 0,(int) player.Scale, (int)texture.getHeight());
+        L2.draw(wallcolumn, (int)x, (int)y+ 250, (int)player.Scale, (int)projheight);
     }
 
     public void render(int layer , Texture texture, float x, float y, float width, float height, Rectangle Hitbox, boolean drawbox){
