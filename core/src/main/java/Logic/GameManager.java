@@ -4,11 +4,8 @@ import Setup.FontBuilder;
 import Setup.MapBuilder;
 import Setup.PlayerBuilder;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 
 public class GameManager {
 
@@ -18,6 +15,7 @@ public class GameManager {
     private FontBuilder Font;
 
     private MapBuilder map;
+
 
     public final float CenterX = Gdx.graphics.getWidth()/2f;
     public final float CenterY = Gdx.graphics.getHeight()/2f;
@@ -33,11 +31,19 @@ public class GameManager {
 
         player = new PlayerBuilder();
 
-
         logic.player = player;
         logic.map = map;
 
+
         renderer.map = map;
+
+        Pixmap pm = new Pixmap(4, 4, Pixmap.Format.RGBA8888);
+        pm.setColor(0, 0, 0, 0);   // RGBA (fully transparent)
+        pm.fill();
+
+        Cursor transparentCursor = Gdx.graphics.newCursor(pm, 0, 0);
+        Gdx.graphics.setCursor(transparentCursor);
+        pm.dispose();
     }
 
     public void updateLogic() {
@@ -50,19 +56,10 @@ public class GameManager {
 
         renderer.renderStart();
 
-        /*for(int j = 0; j < map.height; j++) {
-            for (int i = 0; i < map.width; i++) {
-                if(map.grid[j][i] == 1) {
-                    map.box.x = i*map.unit;
-                    map.box.y = (map.height - 1 - j) * map.unit;
-                    renderer.render(map.box, (int) map.box.x, (int) map.box.y);
-                }
-            }
-       }
-         */
-
-
-        renderer.renderPlayerShape(player);
+        renderer.rendermapprojection(player);
+        //renderer.rendermap();
+        //renderer.render2dplayer(player);
+        //renderer.renderraycast(player);
         //renderer.render(Font, String.valueOf(renderer.test), CenterX, CenterY);
         //renderer.render(Font, String.valueOf((int) player.getRotationDegrees()), CenterX,CenterY);
 

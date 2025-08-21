@@ -70,11 +70,7 @@ public class L3_Render {
         font.bitmap.draw(L1, text, x- font.getWidth(text)/2f, y+font.getHeight(text)/2f);
     }
 
-    public void renderPlayerShape(PlayerBuilder player){
-
-        //L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
-        //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit  , player.getCenterY() + player.getSin() * map.unit);
-
+    public void rendermapprojection(PlayerBuilder player){
         float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
 
         float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort;
@@ -143,12 +139,13 @@ public class L3_Render {
             }
 
             float depth = Math.min(depthvert, depthhort);
-            //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX()-(player.width/2f) + cos_a * depth, player.getCenterY()-(player.height/2f) + sin_a * depth);
 
-            //projection
+            //---projection-----------
 
-           float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
+            //depth by brightness
+            float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
             L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
+
             L3.set(ShapeRenderer.ShapeType.Filled);
             float proj_height = MapBuilder.unit * player.screen_distance / (depth + 0.0001f);
             test = String.valueOf(player.screen_distance);
@@ -196,7 +193,7 @@ public class L3_Render {
     public void renderStart() {
         L1.begin();
         L2.begin();
-        L3.begin(ShapeRenderer.ShapeType.Line);
+        L3.begin(ShapeRenderer. ShapeType.Line);
     }
 
     public void renderEnd() {
@@ -221,5 +218,94 @@ public class L3_Render {
         viewport.update(width, height);
     }
 
+    public void rendermap(){
+        for(int j = 0; j < map.height; j++) {
+            for (int i = 0; i < map.width; i++) {
+                if(map.grid[j][i] == 1) {
+                    map.box.x = i*map.unit;
+                    map.box.y = (map.height - 1 - j) * map.unit;
+                    render(map.box, (int) map.box.x, (int) map.box.y);
+                }
+            }
+        }
+    }
 
+    public void render2dplayer(PlayerBuilder player){
+        L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
+        L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit  , player.getCenterY() + player.getSin() * map.unit);
+    }
+
+    public void renderraycast(PlayerBuilder player) {
+        float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
+
+        float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort;
+        for (int range = 0; range < player.NumofRays; range++) {
+            float sin_a = (float) Math.sin(ray_angle);
+            float cos_a = (float) Math.cos(ray_angle);
+
+            //limits so angle dosent get closer to 0 thus ray casting errors arrrive
+            if (Math.abs(sin_a) < 1e-30) sin_a = 1e-30f;
+            if (Math.abs(cos_a) < 1e-30) cos_a = 1e-30f;
+
+            //Horizontal
+            if (sin_a > 0) {
+                yhor = (int) (player.getY() / map.unit) * map.unit + map.unit;
+                dy = map.unit;
+            } else {
+                yhor = (int) (player.getY() / map.unit) * map.unit - 0.000000001f; // just above current gridline
+                dy = -map.unit;
+            }
+            depthhort = (yhor - player.getY()) / sin_a;
+            xhor = player.getX() + depthhort * cos_a;
+            deltadepth = dy / sin_a;
+            dx = deltadepth * cos_a;
+
+            for (int i = 0; i < player.Depth; i++) {
+                int tilex = (int) xhor;
+                int tiley = (int) yhor;
+                if (map.Wallhit(tilex, tiley)) {
+                    break;
+                }
+                xhor += dx;
+                yhor += dy;
+                depthhort += deltadepth;
+            }
+
+            //Vertical
+            if (cos_a > 0) {
+                xvert = (int) (player.getX() / map.unit) * map.unit + map.unit;
+                dx = map.unit;
+
+            } else {
+                xvert = (int) (player.getX() / map.unit) * map.unit - 0.000000001f;
+                dx = -map.unit;
+            }
+
+
+            depthvert = (xvert - player.getX()) / cos_a;
+            // Make sure its in the unit
+
+            yvert = player.getY() + depthvert * sin_a;
+            test = String.valueOf(yvert);
+            deltadepth = dx / cos_a;
+            dy = deltadepth * sin_a;
+
+            for (int i = 0; i < player.Depth; i++) {
+                int tilex = (int) xvert;
+                int tiley = (int) yvert;
+                if (map.Wallhit(tilex, tiley)) {
+                    break;
+                }
+                xvert += dx;
+                yvert += dy;
+                depthvert += deltadepth;
+            }
+
+            float depth = Math.min(depthvert, depthhort);
+
+            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() - (player.width / 2f) + cos_a * depth, player.getCenterY() - (player.height / 2f) + sin_a * depth);
+            ray_angle += player.DeltaAngle;
+        }
+
+    }
 }

@@ -1,6 +1,8 @@
 package Setup;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Map;
 
@@ -15,12 +17,11 @@ public class PlayerBuilder extends  itemBuilder{
     public float Scale;
     public int Depth;
 
-
-
+    public Circle circlebox;
     public PlayerBuilder(){
-        super("Player", 50, 50, 150,150);
-
-        hitboxradius = 25;
+        super("Player", 40, 40, 150,150);
+        circlebox = new Circle(super.Hitbox.x, super.Hitbox.y, 50);
+        hitboxradius = 20f;
 
         FOV = (float) (Math.PI/3f);
         HALFFOV = FOV/2f; //radians
@@ -40,6 +41,9 @@ public class PlayerBuilder extends  itemBuilder{
     public float getCenterY(){
         return super.getY() + super.height/2f;
     }
+
+
+
 
 
 }
