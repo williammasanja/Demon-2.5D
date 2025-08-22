@@ -148,12 +148,11 @@ public class L3_Render {
 
     public void render2dplayer(PlayerBuilder player) {
         L3.circle(player.x, player.y, player.hitboxradius);
+        render(player.Hitbox);
         //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit, player.getCenterY() + player.getSin() * map.unit);
     }
 
     public void renderraycast(PlayerBuilder player) {
-
-        //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit  , player.getCenterY() + player.getSin() * map.unit);
 
         float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort;
 
@@ -241,9 +240,9 @@ public class L3_Render {
         Rectangle texturevert = new Rectangle();
         Rectangle texturetile;
 
-        for (int range = 0; range < player.NumofRays; range++) {
+        for (int ray = 0; ray < player.NumofRays; ray++) {
             float step = (2 * player.HALFFOV) / (player.NumofRays - 1);
-            float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV + range * step;
+            float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV + ray * step;
 
             float sin_a = (float) Math.sin(ray_angle);
             float cos_a = (float) Math.cos(ray_angle);
@@ -310,18 +309,22 @@ public class L3_Render {
             if (depthvert < depthhort) {
                 depth = depthvert;
                 texturetile = texturevert;
-                yvert %= 1;
-                offset = (cos_a > 0) ? yvert : (1 - yvert);
+                yvert = yvert % 1;
+                offset = ((cos_a > 0) ? yvert : (1 - yvert)) * textureMap.returnTexture(1).getWidth();
+
             } else {
                 depth = depthhort;
                 texturetile = texturehor;
-                xhor %= 1;
-                offset = (sin_a > 0) ? xhor : (1 - xhor);
+                xhor = xhor % 1;
+                offset = ((sin_a > 0) ? (1 - xhor) : xhor) * textureMap.returnTexture(1).getWidth();
             }
 
-            float proj_height = MapBuilder.unit * player.screen_distance / (depth + 0.0001f);
+            float angleDiff = ray_angle - (float)Math.toRadians(player.getRotationDegrees());
+            float correctedDepth = depth * (float)Math.cos(angleDiff);
+
+            float proj_height = MapBuilder.unit * player.screen_distance / (correctedDepth + 0.0001f);
             test = String.valueOf(player.screen_distance);
-            float x = (MapBuilder.width * MapBuilder.unit) - (range * player.Scale);
+            float x = (MapBuilder.width * MapBuilder.unit) - (ray * player.Scale);
             float y = (MapBuilder.half_height * MapBuilder.unit) - proj_height / 2f;
             //---projection-----------
 
@@ -329,7 +332,7 @@ public class L3_Render {
             //depth by brightness (not used for textiles so this is canceled out for now)
             //float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
             //L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
-            //L3.rect(x-5, y + 250, player.Scale, proj_height+ 50);
+            //L3.rect(x - 5,  y + 250, player.Scale, proj_height+ 50);
 
 
             //By Texture
@@ -343,8 +346,34 @@ public class L3_Render {
     }
     public void renderTextureWall(PlayerBuilder player, float projheight, float offset, float x, float y) {
         Texture texture = textureMap.returnTexture(1);
+        int textureSize = texture.getWidth(); // assuming square texture
 
-        TextureRegion wallcolumn = new TextureRegion(texture, (int) (offset * texture.getWidth() - player.Scale), 0, (int) player.Scale, (int) texture.getHeight());
-        L2.draw(wallcolumn, (int) x, (int) y + 250, (int) player.Scale, (int) projheight);
+        // Grab 1-pixel wide vertical slice from the texture
+        TextureRegion column = new TextureRegion(texture, (int)offset, 0, 1, textureSize);
+
+        // Draw stretched: scale in X, projHeight in Y
+        L2.draw(column,
+            x, y+250,              // screen position
+            (int) player.Scale, projheight  // width & height);
+        );
+
+
+    }
+
+    public void renderTextureSplit(int slices){
+        Texture texture = textureMap.returnTexture(1);
+        TextureRegion column;
+        int x = 0;
+        int shiftby = 0;
+        int width = (int)(texture.getWidth()/slices);
+        for(int i = 0; i < slices; i++){
+            column =  new TextureRegion(texture, shiftby, 0, width, texture.getHeight());
+            L2.draw(column, x, 0, width/2f, texture.getHeight()/2);
+            x += 100;
+            shiftby += width;
+        }
+
+
+
     }
 }
