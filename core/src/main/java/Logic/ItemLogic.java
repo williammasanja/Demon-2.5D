@@ -18,9 +18,6 @@ public class ItemLogic {
 
 
     public void Logic() {
-
-
-
         float rotationspeed = 2f;
         float speed = 5;
         float dy = 0;
@@ -33,12 +30,6 @@ public class ItemLogic {
         float pointerdelta = Gdx.input.getDeltaX();
         float pointer_rotation = -(Gdx.input.getX()-(Gdx.graphics.getWidth()/2f)) * ((float) 720/Gdx.graphics.getWidth()/2f);
         player.setRotationPosition(pointer_rotation);
-
-
-
-
-        // rotate
-
 
         //Strafing mechanics
 
@@ -88,7 +79,7 @@ public class ItemLogic {
             }
             if(player.touching) break;
         }
-        if(player.touching) player.setX(oldX);
+        //if(player.touching) player.setX(oldX);
 
         // Move Y
         player.updatePosition(0, dy);
@@ -104,7 +95,11 @@ public class ItemLogic {
             }
             if(player.touching) break;
         }
-        if(player.touching) player.setY(oldY);
+        //if(player.touching) player.setY(oldY);
+
+
+
+
     }
 
 

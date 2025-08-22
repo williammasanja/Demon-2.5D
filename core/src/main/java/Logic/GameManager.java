@@ -61,7 +61,7 @@ public class GameManager {
 
         renderer.renderStart();
 
-        renderer.rendermapprojection(player);
+        renderer.renderMaprojection(player);
         //renderer.rendermap();
         //renderer.render2dplayer(player);
         //renderer.renderraycast(player);

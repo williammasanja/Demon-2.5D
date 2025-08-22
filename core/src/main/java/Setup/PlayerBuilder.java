@@ -18,8 +18,8 @@ public class PlayerBuilder extends  itemBuilder{
     public float y;
 
     public PlayerBuilder(){
-        super("Player", 40, 40, 150,150);
-        hitboxradius = 20f;
+        super("Player", 30, 30, 150,150);
+        hitboxradius = 15f;
         x =  (super.getX() + super.width/2f);
         y =  (super.getY() + super.height/2f);
         hitboxradius = 25;
@@ -43,16 +43,6 @@ public class PlayerBuilder extends  itemBuilder{
         return super.getY() + super.height/2f;
     }
 
-    public boolean TouchingBox(Rectangle Box){
-        if(boxactive) {
-            if (Hitbox.overlaps(Box)) {
-                touching = true;
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void updatePosition(float x, float y){
         this.x += x;
         this.y += y;
@@ -73,6 +63,15 @@ public class PlayerBuilder extends  itemBuilder{
     public float getY(){
         return y;
     }
+
+    public void setX(float x){
+        this.x = x+width/2f;
+        Hitbox.x = x;}
+
+    public void setY(float y){
+        this.y = y+height/2f;
+        Hitbox.y = y;}
+
 
 
 
