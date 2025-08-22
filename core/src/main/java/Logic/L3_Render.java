@@ -69,9 +69,12 @@ public class L3_Render {
         font.bitmap.draw(L1, text, x- font.getWidth(text)/2f, y+font.getHeight(text)/2f);
     }
 
-    public void rendermapprojection(PlayerBuilder player){
+    public void renderPlayerShape(PlayerBuilder player){
 
-        float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
+        L3.circle(player.x, player.y, player.hitboxradius);
+        //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit  , player.getCenterY() + player.getSin() * map.unit);
+
+
 
         float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort, offset;
         Rectangle texturehor = new Rectangle();
@@ -79,6 +82,9 @@ public class L3_Render {
         Rectangle texturetile;
 
         for(int range = 0; range < player.NumofRays; range++){
+            float step = (2 * player.HALFFOV) / (player.NumofRays - 1);
+            float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV +  range * step;
+
             float sin_a = (float) Math.sin(ray_angle);
             float cos_a = (float) Math.cos(ray_angle);
 
@@ -143,7 +149,7 @@ public class L3_Render {
                 yvert += dy;
                 depthvert += deltadepth;
             }
-            float depth = 0;
+            /*float depth = 0;
             if(depthvert < depthhort){
                 depth = depthvert;
                 texturetile = texturevert;
@@ -155,8 +161,7 @@ public class L3_Render {
                 texturetile = texturehor;
                 xhor %= 1;
                 offset = (sin_a > 0) ? xhor: (1-xhor);
-            }
-
+            }*/
 
             float proj_height = MapBuilder.unit * player.screen_distance / (depth + 0.0001f);
             test = String.valueOf(player.screen_distance);
@@ -164,7 +169,7 @@ public class L3_Render {
             float y = (MapBuilder.half_height * MapBuilder.unit) - proj_height / 2f;
             //---projection-----------
 
-            // By Rectangles
+            /*       // By Rectangles
             //depth by brightness (not used for textiles so this is canceled out for now)
             //float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
             //L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
@@ -173,7 +178,9 @@ public class L3_Render {
             // By Texture
             renderTextureWall(player, proj_height, offset, x, y);
             ray_angle += player.DeltaAngle;
-
+             */
+            L3.line(player.getX(), player.getY(), player.getX() + cos_a * depth, player.getY() + sin_a * depth);
+            ray_angle += player.DeltaAngle;
         }
     }
 
@@ -220,7 +227,7 @@ public class L3_Render {
     public void renderStart() {
         L1.begin();
         L2.begin();
-        L3.begin(ShapeRenderer. ShapeType.Line);
+        L3.begin(ShapeRenderer.ShapeType.Line);
     }
 
     public void renderEnd() {

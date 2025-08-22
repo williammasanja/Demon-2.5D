@@ -1,10 +1,7 @@
 package Setup;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
-
-import java.util.Map;
 
 public class PlayerBuilder extends  itemBuilder{
     public float hitboxradius;
@@ -17,11 +14,15 @@ public class PlayerBuilder extends  itemBuilder{
     public float Scale;
     public int Depth;
 
-    public Circle circlebox;
+    public float x;
+    public float y;
+
     public PlayerBuilder(){
         super("Player", 40, 40, 150,150);
-        circlebox = new Circle(super.Hitbox.x, super.Hitbox.y, 50);
         hitboxradius = 20f;
+        x =  (super.getX() + super.width/2f);
+        y =  (super.getY() + super.height/2f);
+        hitboxradius = 25;
 
         FOV = (float) (Math.PI/3f);
         HALFFOV = FOV/2f; //radians
@@ -40,6 +41,37 @@ public class PlayerBuilder extends  itemBuilder{
 
     public float getCenterY(){
         return super.getY() + super.height/2f;
+    }
+
+    public boolean TouchingBox(Rectangle Box){
+        if(boxactive) {
+            if (Hitbox.overlaps(Box)) {
+                touching = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updatePosition(float x, float y){
+        this.x += x;
+        this.y += y;
+        Hitbox.x += x;
+        Hitbox.y += y;
+    }
+
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+        Hitbox.setPosition(x-width/2f, y-height/2f);
+    }
+
+    public float getX(){
+        return x;
+    }
+
+    public float getY(){
+        return y;
     }
 
 

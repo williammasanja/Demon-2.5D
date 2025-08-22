@@ -11,12 +11,14 @@ public class ItemLogic {
     public  PlayerBuilder player;
     public MapBuilder map;
 
+
     public ItemLogic() {
         inputKey = new InputKey();
     }
 
+
     public void Logic() {
-        float centerX = Gdx.graphics.getWidth() / 2f;
+
 
 
         float rotationspeed = 2f;
@@ -34,6 +36,8 @@ public class ItemLogic {
 
 
 
+
+        // rotate
 
 
         //Strafing mechanics
@@ -53,21 +57,19 @@ public class ItemLogic {
             dy -= c * v;
         };
 
-        if (inputKey.pressedW()) {
-            dx += (float) (Math.cos(player.getRad()) * speed);
-            dy += (float) (Math.sin(player.getRad()) * speed);
-        }
+            if (inputKey.pressedW()) {
+                dx += (float) (Math.cos(player.getRad()) * speed);
+                dy += (float) (Math.sin(player.getRad()) * speed);
+            }
+            if (inputKey.pressedS()) {
+                dx -= (float) (Math.cos(player.getRad()) * speed);
+                dy -= (float) (Math.sin(player.getRad()) * speed);
+            }
 
-        if (inputKey.pressedS()) {
-            dx -= (float) (Math.cos(player.getRad()) * speed);
-            dy -= (float) (Math.sin(player.getRad()) * speed);
-        }
 
         if(inputKey.pressed(Input.Keys.SPACE)){
-            player.setRotationPosition(90);
+            player.setRotationPosition(-90);
         }
-
-        //slides on walls
         float oldX = player.getX();
         float oldY = player.getY();
 
@@ -107,16 +109,15 @@ public class ItemLogic {
 
 
     public String test(){
-
         if(inputKey.pressedW()){
             return "W";
         } else if (inputKey.pressedA()) {
             return "A";
-        }
-        else if (inputKey.pressedS()) {
+
+        } else if (inputKey.pressedS()) {
             return "S";
-        }
-        else if (inputKey.pressedD()) {
+
+        } else if (inputKey.pressedD()) {
             return "D";
         }
         else if (inputKey.pressedQ()) {
@@ -127,7 +128,8 @@ public class ItemLogic {
         }
         return "NA";
     }
-}
+
+    }
 
 
 
