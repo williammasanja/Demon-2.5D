@@ -326,6 +326,8 @@ public class L3_Render {
             test = String.valueOf(player.screen_distance);
             float x = (MapBuilder.width * MapBuilder.unit) - (ray * player.Scale);
             float y = (MapBuilder.half_height * MapBuilder.unit) - proj_height / 2f;
+
+
             //---projection-----------
 
             /*By Rectangles */
@@ -346,18 +348,11 @@ public class L3_Render {
     }
     public void renderTextureWall(PlayerBuilder player, float projheight, float offset, float x, float y) {
         Texture texture = textureMap.returnTexture(1);
-        int textureSize = texture.getWidth(); // assuming square texture
+        int textureSize = texture.getWidth();
 
-        // Grab 1-pixel wide vertical slice from the texture
         TextureRegion column = new TextureRegion(texture, (int)offset, 0, 1, textureSize);
 
-        // Draw stretched: scale in X, projHeight in Y
-        L2.draw(column,
-            x, y+250,              // screen position
-            (int) player.Scale, projheight  // width & height);
-        );
-
-
+        L2.draw(column, x, y+250,  (int) player.Scale, projheight);
     }
 
     public void renderTextureSplit(int slices){
