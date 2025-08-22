@@ -41,8 +41,9 @@ public class ItemLogic {
 
 
         if(inputKey.pressed(Input.Keys.SPACE)){
-            player.setRotationPosition(90);
+            player.setRotationPosition(-90);
         }
+
         float oldX = player.getX();
         float oldY = player.getY();
 

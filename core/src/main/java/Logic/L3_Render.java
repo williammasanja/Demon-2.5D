@@ -70,15 +70,19 @@ public class L3_Render {
 
     public void renderPlayerShape(PlayerBuilder player){
 
-        L3.circle(player.getX()+player.hitboxradius, player.getY()+ player.hitboxradius, player.hitboxradius);
+        L3.circle(player.x, player.y, player.hitboxradius);
         //L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX() + player.getCos() * map.unit  , player.getCenterY() + player.getSin() * map.unit);
 
-        float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
+
 
         float xvert, yvert, dx, dy, xhor, yhor, deltadepth, depthvert, depthhort;
         for(int range = 0; range < player.NumofRays; range++){
+            float step = (2 * player.HALFFOV) / (player.NumofRays - 1);
+            float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV +  range * step;
+
             float sin_a = (float) Math.sin(ray_angle);
             float cos_a = (float) Math.cos(ray_angle);
+
 
             //Horizontal
             if(sin_a > 0){
@@ -138,7 +142,7 @@ public class L3_Render {
 
             float depth = Math.min(depthvert, depthhort);
 
-            L3.line(player.getCenterX(), player.getCenterY(), player.getCenterX()-(player.width/2f) + cos_a * depth, player.getCenterY()-(player.height/2f) + sin_a * depth);
+            L3.line(player.getX(), player.getY(), player.getX() + cos_a * depth, player.getY() + sin_a * depth);
             ray_angle += player.DeltaAngle;
         }
     }
