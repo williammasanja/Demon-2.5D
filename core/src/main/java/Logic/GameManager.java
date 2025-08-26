@@ -60,9 +60,10 @@ public class GameManager {
         renderer.setProjectionMatrix();
 
         renderer.renderStart();
+
         renderer.renderMaprojection(player);
         //renderer.renderTextureSplit(10);
-        //renderer.render(Font, String.valueOf(textureMap.returnTexture(1).getWidth()), 150, 100);
+        //renderer.render(Font, String.valueOf(renderer.test), 150, 100);
         //renderer.rendermap();
         //renderer.render2dplayer(player);
         //renderer.renderraycast(player);

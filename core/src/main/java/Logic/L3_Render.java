@@ -306,6 +306,7 @@ public class L3_Render {
             }
             //Depth
             float depth = 0;
+
             if (depthvert < depthhort) {
                 depth = depthvert;
                 texturetile = texturevert;
@@ -316,14 +317,15 @@ public class L3_Render {
                 depth = depthhort;
                 texturetile = texturehor;
                 xhor = xhor % 1;
+
                 offset = ((sin_a > 0) ? (1 - xhor) : xhor) * textureMap.returnTexture(1).getWidth();
             }
+           
 
             float angleDiff = ray_angle - (float)Math.toRadians(player.getRotationDegrees());
             float correctedDepth = depth * (float)Math.cos(angleDiff);
 
             float proj_height = MapBuilder.unit * player.screen_distance / (correctedDepth + 0.0001f);
-            test = String.valueOf(player.screen_distance);
             float x = (MapBuilder.width * MapBuilder.unit) - (ray * player.Scale);
             float y = (MapBuilder.half_height * MapBuilder.unit) - proj_height / 2f;
 
@@ -339,9 +341,6 @@ public class L3_Render {
 
             //By Texture
             renderTextureWall(player, proj_height, offset, x, y);
-
-
-
             ray_angle += player.DeltaAngle;
         }
 

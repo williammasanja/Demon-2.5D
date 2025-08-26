@@ -24,12 +24,12 @@ public class ItemLogic {
         float dx = 0;
 
         // key-rotation
-        if(inputKey.pressedA()) player.setRotationPosition(player.getRotationDegrees() + rotationspeed);
-        if(inputKey.pressedD()) player.setRotationPosition(player.getRotationDegrees() - rotationspeed);
+        //if(inputKey.pressedA()) player.setRotationPosition(player.getRotationDegrees() + rotationspeed);
+        //if(inputKey.pressedD()) player.setRotationPosition(player.getRotationDegrees() - rotationspeed);
 
-        //float pointerdelta = Gdx.input.getDeltaX();
-        //float pointer_rotation = -(Gdx.input.getX()-(Gdx.graphics.getWidth()/2f)) * ((float) 720/Gdx.graphics.getWidth()/2f);
-        //player.setRotationPosition(pointer_rotation);
+        float pointerdelta = Gdx.input.getDeltaX();
+        float pointer_rotation = -(Gdx.input.getX()-(Gdx.graphics.getWidth()/2f)) * ((float) 720/Gdx.graphics.getWidth()/2f);
+        player.setRotationPosition(pointer_rotation);
 
         //Strafing mechanics
 
