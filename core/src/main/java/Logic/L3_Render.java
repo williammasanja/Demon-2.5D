@@ -239,24 +239,22 @@ public class L3_Render {
         Rectangle texturehor = new Rectangle();
         Rectangle texturevert = new Rectangle();
         Rectangle texturetile;
-
+       float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV;
         for (int ray = 0; ray < player.NumofRays; ray++) {
-            float step = (2 * player.HALFFOV) / (player.NumofRays - 1);
-            float ray_angle = (float) Math.toRadians(player.getRotationDegrees()) - player.HALFFOV + ray * step;
 
             float sin_a = (float) Math.sin(ray_angle);
             float cos_a = (float) Math.cos(ray_angle);
 
             //limits so angle dosent get closer to 0 thus ray casting errors arrrive
             if (Math.abs(sin_a) < 1e-30) sin_a = 1e-30f;
-            if (Math.abs(cos_a) < 1e-30) cos_a = 1e-30f;
+           if (Math.abs(cos_a) < 1e-30) cos_a = 1e-30f;
 
             //Horizontal
             if (sin_a > 0) {
-                yhor = (int) (player.getY() / map.unit) * map.unit + map.unit;
+                yhor = (int)(player.getY() / map.unit) * map.unit + map.unit;
                 dy = map.unit;
             } else {
-                yhor = (int) (player.getY() / map.unit) * map.unit - 0.000000001f; // just above current gridline
+                yhor =  (int)(player.getY() / map.unit) * map.unit - 0.000000001f; // just above current gridline
                 dy = -map.unit;
             }
             depthhort = (yhor - player.getY()) / sin_a;
@@ -265,8 +263,8 @@ public class L3_Render {
             dx = deltadepth * cos_a;
 
             for (int i = 0; i < player.Depth; i++) {
-                int tilex = (int) xhor;
-                int tiley = (int) yhor;
+                float tilex =  xhor;
+                float tiley =  yhor;
                 if (map.Wallhit(tilex, tiley)) {
                     texturehor = map.WallHitRect(tilex, tiley);
                     break;
@@ -278,11 +276,11 @@ public class L3_Render {
 
             //Vertical
             if (cos_a > 0) {
-                xvert = (int) (player.getX() / map.unit) * map.unit + map.unit;
+                xvert = (int)(player.getX() / map.unit) * map.unit + map.unit;
                 dx = map.unit;
 
             } else {
-                xvert = (int) (player.getX() / map.unit) * map.unit - 0.000000001f;
+                xvert = (int)(player.getX() / map.unit) * map.unit - 0.000000001f;
                 dx = -map.unit;
             }
 
@@ -294,8 +292,8 @@ public class L3_Render {
             dy = deltadepth * sin_a;
 
             for (int i = 0; i < player.Depth; i++) {
-                int tilex = (int) xvert;
-                int tiley = (int) yvert;
+                float tilex =  xvert;
+                float tiley =  yvert;
                 if (map.Wallhit(tilex, tiley)) {
                     texturevert = map.WallHitRect(tilex, tiley);
                     break;
@@ -309,6 +307,7 @@ public class L3_Render {
 
             if (depthvert < depthhort) {
                 depth = depthvert;
+
                 texturetile = texturevert;
                 yvert = yvert % 1;
                 offset = ((cos_a > 0) ? yvert : (1 - yvert)) * textureMap.returnTexture(1).getWidth();
@@ -319,29 +318,31 @@ public class L3_Render {
                 xhor = xhor % 1;
 
                 offset = ((sin_a > 0) ? (1 - xhor) : xhor) * textureMap.returnTexture(1).getWidth();
+
+
             }
-           
+
 
             float angleDiff = ray_angle - (float)Math.toRadians(player.getRotationDegrees());
             float correctedDepth = depth * (float)Math.cos(angleDiff);
 
-            float proj_height = MapBuilder.unit * player.screen_distance / (correctedDepth + 0.0001f);
+            float proj_height = MapBuilder.unit * player.screen_distance / (correctedDepth + 0.00000001f);
             float x = (MapBuilder.width * MapBuilder.unit) - (ray * player.Scale);
             float y = (MapBuilder.half_height * MapBuilder.unit) - proj_height / 2f;
 
 
-            //---projection-----------
 
+            //---projection-----------
             /*By Rectangles */
             //depth by brightness (not used for textiles so this is canceled out for now)
             //float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
             //L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
             //L3.rect(x - 5,  y + 250, player.Scale, proj_height+ 50);
-
-
             //By Texture
             renderTextureWall(player, proj_height, offset, x, y);
             ray_angle += player.DeltaAngle;
+
+
         }
 
     }
@@ -349,7 +350,7 @@ public class L3_Render {
         Texture texture = textureMap.returnTexture(1);
         int textureSize = texture.getWidth();
 
-        TextureRegion column = new TextureRegion(texture, (int)offset, 0, 1, textureSize);
+        TextureRegion column = new TextureRegion(texture, (int) offset, 0, (int) player.Scale, textureSize);
 
         L2.draw(column, x, y+250,  (int) player.Scale, projheight);
     }
