@@ -24,12 +24,12 @@ public class ItemLogic {
         float dx = 0;
 
         // key-rotation
-        //if(inputKey.pressedA()) player.setRotationPosition(player.getRotationDegrees() + rotationspeed);
-        //if(inputKey.pressedD()) player.setRotationPosition(player.getRotationDegrees() - rotationspeed);
+        if(inputKey.pressedA()) player.setRotationPosition(player.getRotationDegrees() + rotationspeed);
+        if(inputKey.pressedD()) player.setRotationPosition(player.getRotationDegrees() - rotationspeed);
 
-        float pointerdelta = Gdx.input.getDeltaX();
-        float pointer_rotation = -(Gdx.input.getX()-(Gdx.graphics.getWidth()/2f)) * ((float) 720/Gdx.graphics.getWidth()/2f);
-        player.setRotationPosition(pointer_rotation);
+        //float pointerdelta = Gdx.input.getDeltaX();
+        //float pointer_rotation = -(Gdx.input.getX()-(Gdx.graphics.getWidth()/2f)) * ((float) 720/Gdx.graphics.getWidth()/2f);
+        //player.setRotationPosition(pointer_rotation);
 
         //Strafing mechanics
 
@@ -39,14 +39,14 @@ public class ItemLogic {
         float v = speed;
 
         // A = left, D = right
-        if (inputKey.pressedA()){
+      /*  if (inputKey.pressedA()){
             dx -= s * v;
             dy += c * v;
         }
         if (inputKey.pressedD()){
             dx += s * v;
             dy -= c * v;
-        };
+        };*/
 
             if (inputKey.pressedW()) {
                 dx += (float) (Math.cos(player.getRad()) * speed);
@@ -69,7 +69,7 @@ public class ItemLogic {
         player.touching = false;
         for(int j = 0; j < map.height; j++) {
             for(int i = 0; i < map.width; i++) {
-                if(player.TouchingBox(map.getMapHitbox(i, j))) {
+                if(player.TouchingBox(map.getMapHitbox(i, j)) && map.isWall(i, j)) {
                     player.touching = true;
                     // push player slightly away from wall
                    if(dx > 0) player.setX(map.getMapHitbox(i, j).x - player.width);
@@ -86,7 +86,7 @@ public class ItemLogic {
         player.touching = false;
         for(int j = 0; j < map.height; j++) {
             for(int i = 0; i < map.width; i++) {
-                if(player.TouchingBox(map.getMapHitbox(i, j))) {
+                if(player.TouchingBox(map.getMapHitbox(i, j)) && map.isWall(i, j)) {
                     player.touching = true;
                     if(dy > 0) player.setY(map.getMapHitbox(i, j).y - player.height);
                    else if(dy < 0) player.setY(map.getMapHitbox(i, j).y + map.getMapHitbox(i, j).height);

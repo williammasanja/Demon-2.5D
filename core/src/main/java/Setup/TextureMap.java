@@ -13,6 +13,7 @@ public class TextureMap {
         Textures = new ArrayList<>();
         addTexture(Gdx.files.internal("assets/textures/Stone.png"));
         addTexture(Gdx.files.internal("assets/textures/Brick.png"));
+        addTexture(Gdx.files.internal("assets/textures/Hello.png"));
     }
 
     public void addTexture(FileHandle File){

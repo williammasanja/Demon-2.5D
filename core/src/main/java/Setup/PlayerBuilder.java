@@ -4,6 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 
 public class PlayerBuilder extends  itemBuilder{
+
+    /*
+    NO MATTER WHAT DONT CONVERT THE FLOATS
+    TO INTS, YOULL HAVE LOSS OF INFROMATION THAT PILES UP
+    OVER THE CODE AND DISRUPTS MAP PROJECTION
+     */
+
     public float hitboxradius;
     public float screen_distance;
     public float FOV;
@@ -26,7 +33,7 @@ public class PlayerBuilder extends  itemBuilder{
 
         FOV = (float) (Math.PI/3f);
         HALFFOV = FOV/2f; //radians
-        NumofRays = 200;
+        NumofRays = 100;
         HalfRays = NumofRays/2f;
         DeltaAngle = FOV/NumofRays;
         Depth = 30; //Boxes to check
@@ -70,11 +77,7 @@ public class PlayerBuilder extends  itemBuilder{
 
     public void setY(float y){
         this.y = y+height/2f;
-        Hitbox.y = y;}
-
-
-
-
-
+        Hitbox.y = y;
+    }
 
 }
