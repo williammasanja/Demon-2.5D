@@ -33,7 +33,7 @@ public class PlayerBuilder extends  itemBuilder{
 
         FOV = (float) (Math.PI/3f);
         HALFFOV = FOV/2f; //radians
-        NumofRays = 100;
+        NumofRays = 300;
         HalfRays = NumofRays/2f;
         DeltaAngle = FOV/NumofRays;
         Depth = 30; //Boxes to check
@@ -50,6 +50,11 @@ public class PlayerBuilder extends  itemBuilder{
         return super.getY() + super.height/2f;
     }
 
+
+    public int getMapX(){ return (int) (getX()/MapBuilder.unit) * MapBuilder.unit; }
+    public int getMapY(){ return (int) (getY()/MapBuilder.unit) * MapBuilder.unit; }
+
+
     public void updatePosition(float x, float y){
         this.x += x;
         this.y += y;
@@ -62,13 +67,19 @@ public class PlayerBuilder extends  itemBuilder{
         this.y = y;
         Hitbox.setPosition(x-width/2f, y-height/2f);
     }
-
     public float getX(){
         return x;
     }
 
     public float getY(){
         return y;
+    }
+
+    public float getTrueX(){
+        return x - width/2f;
+    }
+    public float getTrueY(){
+        return y - height/2f;
     }
 
     public void setX(float x){

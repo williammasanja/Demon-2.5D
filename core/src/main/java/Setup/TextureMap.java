@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class TextureMap {
     ArrayList<Texture> Textures;
 
+    final int SIZE = 256;
+
     public TextureMap(){
         Textures = new ArrayList<>();
         addTexture(Gdx.files.internal("assets/textures/Stone.png"));
