@@ -9,6 +9,10 @@ public class InputKey {
 
     }
 
+    public boolean justpresset(int Key){
+        return Gdx.input.isKeyJustPressed(Key);
+    }
+
     public boolean pressed(int Key){
         return Gdx.input.isKeyPressed(Key);
     }
@@ -36,5 +40,7 @@ public class InputKey {
     public boolean pressedE(){
         return pressed(Input.Keys.E);
     }
+
+
 
 }

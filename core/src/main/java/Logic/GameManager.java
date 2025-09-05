@@ -26,6 +26,8 @@ public class GameManager {
     private PlayerBuilder player;
 
     public GameManager() {
+        Gdx.input.setCursorCatched(true);
+
         renderer = new L3_Render();
         logic = new ItemLogic();
 
@@ -63,7 +65,7 @@ public class GameManager {
 
         renderer.renderMaprojection(player);
         //renderer.renderTextureSplit(10);
-        renderer.render(Font, String.valueOf(renderer.test), 350, 100);
+        //renderer.render(Font, String.valueOf(renderer.test), 350, 100);
         //renderer.rendermap();
         //renderer.render2dplayer(player);
         //renderer.renderraycast(player);

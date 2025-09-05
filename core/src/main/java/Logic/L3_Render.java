@@ -363,11 +363,9 @@ public class L3_Render {
             //float shade = (float) (128f/Math.pow(depth, 0.9)+ 0.01);
             //L3.setColor(shade, shade, shade, 1f);  // RGB grayscale, full alpha
             if( verthit || horhit) {
-                    if(proj_height > 100) { //Draw Render Limit
                         //L3.rect(x, y + 250, player.Scale, proj_height);
-
                         renderTextureWall(player, proj_height, offset, x, y, xhor, yvert);
-                    }
+
                     }
 
 
@@ -388,7 +386,7 @@ public class L3_Render {
         offset = offset * textureSize;
         int invertedoffset = textureSize - 1 - (int)offset;
         TextureRegion column = new TextureRegion(texture, (int) invertedoffset, 0, (int) player.Scale, textureSize);
-            L2.draw(column, x, y + 250,  (int)player.Scale, projheight);
+            L2.draw(column, x, y + 250,  player.Scale, projheight);
 
 
 

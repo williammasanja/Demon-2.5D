@@ -11,23 +11,30 @@ public class ItemLogic {
     public  PlayerBuilder player;
     public MapBuilder map;
 
-
+    boolean tf;
     public ItemLogic() {
         inputKey = new InputKey();
+        tf = false;
     }
 
 
     public void Logic() {
         float rotationspeed = 2f;
-        float speed = 5;
+        float speed = 7;
         float dy = 0;
         float dx = 0;
+
 
         // key-rotation
         //if(inputKey.pressedA()) player.setRotationPosition(player.getRotationDegrees() + rotationspeed);
         //if(inputKey.pressedD()) player.setRotationPosition(player.getRotationDegrees() - rotationspeed);
 
-        float pointerdelta = Gdx.input.getDeltaX();
+        //float pointerdelta = Gdx.input.getDeltaX();
+        // Catch the cursor for infinite movement
+        if (inputKey.justpresset(Input.Keys.ESCAPE)) {
+            tf = !tf;
+            Gdx.input.setCursorCatched(tf);
+        }
         float pointer_rotation = -(Gdx.input.getX()-(Gdx.graphics.getWidth()/2f)) * ((float) 720/Gdx.graphics.getWidth()/2f);
         player.setRotationPosition(pointer_rotation);
 
@@ -36,7 +43,7 @@ public class ItemLogic {
         float deg = player.getRotationDegrees();          // if 0° faces UP, use (deg - 90)
         float rad = deg * MathUtils.degreesToRadians;
         float s = MathUtils.sin(rad), c = MathUtils.cos(rad);
-        float v = speed;
+        float v = 4.5f; // speed for sidways
 
         // A = left, D = right
         if (inputKey.pressedA()){
